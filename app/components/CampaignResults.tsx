@@ -1,55 +1,84 @@
+const accentMap: Record<string, {
+  badge: string;
+  topBar: string;
+  clientText: string;
+  resultText: string;
+  metricValue: string;
+  divider: string;
+}> = {
+  blue: {
+    badge:       "bg-blue-600 text-white",
+    topBar:      "bg-blue-600",
+    clientText:  "text-blue-700",
+    resultText:  "text-blue-700",
+    metricValue: "text-blue-800",
+    divider:     "border-blue-100",
+  },
+  pink: {
+    badge:       "bg-pink-600 text-white",
+    topBar:      "bg-pink-600",
+    clientText:  "text-pink-700",
+    resultText:  "text-pink-700",
+    metricValue: "text-pink-800",
+    divider:     "border-pink-100",
+  },
+  violet: {
+    badge:       "bg-violet-600 text-white",
+    topBar:      "bg-violet-600",
+    clientText:  "text-violet-700",
+    resultText:  "text-violet-700",
+    metricValue: "text-violet-800",
+    divider:     "border-violet-100",
+  },
+};
+
 const results = [
   {
     theme: "Revenue Scaling",
-    themeColor: "bg-blue-50 text-blue-600",
+    accent: "blue",
     client: "Enersave Solutions",
     headline: "How a full-funnel Google Ads strategy turned visibility into $1.19M in revenue",
     problem: "The business had traffic but no structured conversion path across Search, Display, and YouTube.",
     approach: "Built a layered campaign architecture targeting each stage of the buying journey — from awareness to high-intent search.",
     mainResult: "$1.19M in attributed revenue",
-    mainResultColor: "text-blue-700",
     metrics: [
       { value: "8.4x", label: "ROAS" },
       { value: "185M+", label: "Impressions" },
     ],
-    border: "border-blue-100",
   },
   {
     theme: "Budget Efficiency",
-    themeColor: "bg-pink-50 text-pink-600",
+    accent: "pink",
     client: "FindYello — Yello Media Group",
     headline: "Maximum reach on a $250 budget through smart audience segmentation",
     problem: "A lean media budget meant every dollar had to work harder than average.",
     approach: "Prioritised audience overlap reduction and creative variation to lower CPM and extend reach across Facebook and Instagram.",
     mainResult: "$0.46 CPM — well below industry average",
-    mainResultColor: "text-pink-700",
     metrics: [
       { value: "541K+", label: "Impressions" },
       { value: "36,753", label: "Unique Viewers" },
     ],
-    border: "border-pink-100",
   },
   {
     theme: "Campaign Storytelling",
-    themeColor: "bg-violet-50 text-violet-600",
+    accent: "violet",
     client: "Brand Camp 2025 + Refill Hope",
     headline: "From concept to 220K+ views — leading two campaigns end to end",
     problem: "Both campaigns needed more than promotion — they needed a clear narrative and coordinated execution across channels.",
     approach: "Led strategy, creative direction, and video production while managing paid and organic distribution simultaneously.",
     mainResult: "220K+ combined views across both campaigns",
-    mainResultColor: "text-violet-700",
     metrics: [
       { value: "3,900+", label: "Interactions" },
       { value: "100K+", label: "Brand Camp Views" },
     ],
-    border: "border-violet-100",
   },
 ];
 
 export default function CampaignResults() {
   return (
-    <section className="px-6 py-16 sm:py-20">
+    <section className="border-y border-slate-200 bg-white px-6 py-16 sm:py-20">
       <div className="mx-auto max-w-6xl">
+
         {/* Header */}
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-blue-600">
@@ -64,60 +93,76 @@ export default function CampaignResults() {
         </div>
 
         {/* Cards */}
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {results.map((r) => (
-            <article
-              key={r.client}
-              className={`flex flex-col rounded-2xl border ${r.border} bg-white p-7`}
-            >
-              {/* Theme badge */}
-              <span className={`inline-flex w-fit rounded-full px-3 py-1 text-xs font-semibold ${r.themeColor}`}>
-                {r.theme}
-              </span>
+        <div className="mt-10 grid gap-7 lg:grid-cols-3">
+          {results.map((r) => {
+            const a = accentMap[r.accent];
+            return (
+              <article
+                key={r.client}
+                className="flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md shadow-slate-200/60"
+              >
+                {/* Top accent bar */}
+                <div className={`h-1 w-full ${a.topBar}`} />
 
-              {/* Client */}
-              <p className="mt-5 text-[0.65rem] font-semibold uppercase tracking-widest text-slate-400">
-                {r.client}
-              </p>
+                {/* Card body */}
+                <div className="flex flex-1 flex-col p-7">
 
-              {/* Headline */}
-              <h3 className="mt-1.5 text-base font-bold leading-snug text-slate-900">
-                {r.headline}
-              </h3>
+                  {/* Theme badge */}
+                  <span className={`inline-flex w-fit items-center rounded-full px-3 py-1 text-xs font-semibold ${a.badge}`}>
+                    {r.theme}
+                  </span>
 
-              {/* Divider */}
-              <div className="my-4 border-t border-slate-100" />
+                  {/* Client */}
+                  <p className={`mt-5 text-[0.7rem] font-bold uppercase tracking-widest ${a.clientText}`}>
+                    {r.client}
+                  </p>
 
-              {/* Problem + Approach */}
-              <p className="text-xs leading-5 text-slate-500">
-                <span className="font-semibold text-slate-700">Challenge: </span>
-                {r.problem}
-              </p>
-              <p className="mt-2 text-xs leading-5 text-slate-500">
-                <span className="font-semibold text-slate-700">Approach: </span>
-                {r.approach}
-              </p>
+                  {/* Headline */}
+                  <h3 className="mt-1.5 text-base font-bold leading-snug text-slate-900">
+                    {r.headline}
+                  </h3>
 
-              {/* Main result */}
-              <p className={`mt-5 text-lg font-bold tracking-tight ${r.mainResultColor}`}>
-                {r.mainResult}
-              </p>
+                  {/* Divider */}
+                  <div className={`my-5 border-t ${a.divider}`} />
 
-              {/* Supporting metrics */}
-              <div className="mt-3 flex gap-5">
-                {r.metrics.map((m) => (
-                  <div key={m.label}>
-                    <p className="text-sm font-bold text-slate-800">{m.value}</p>
-                    <p className="text-xs text-slate-400">{m.label}</p>
+                  {/* Challenge + Approach */}
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-900">Challenge</p>
+                      <p className="mt-0.5 text-xs leading-5 text-slate-500">{r.problem}</p>
+                    </div>
+                    <div>
+                      <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-900">Approach</p>
+                      <p className="mt-0.5 text-xs leading-5 text-slate-500">{r.approach}</p>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </article>
-          ))}
+
+                  {/* Main result — pinned to bottom */}
+                  <div className="mt-auto pt-6">
+                    <p className="text-[0.6rem] font-bold uppercase tracking-widest text-slate-400">Result</p>
+                    <p className={`mt-1 text-2xl font-bold leading-tight tracking-tight ${a.resultText}`}>
+                      {r.mainResult}
+                    </p>
+
+                    {/* Supporting metrics */}
+                    <div className="mt-4 flex gap-5 border-t border-slate-100 pt-4">
+                      {r.metrics.map((m) => (
+                        <div key={m.label}>
+                          <p className={`text-sm font-bold ${a.metricValue}`}>{m.value}</p>
+                          <p className="text-[0.65rem] font-medium uppercase tracking-wide text-slate-400">{m.label}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+              </article>
+            );
+          })}
         </div>
 
-        {/* Bottom strip */}
-        <div className="mt-8 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-6 py-5 sm:flex-row">
+        {/* Bottom credibility strip */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 px-6 py-5 sm:flex-row">
           <p className="text-sm font-medium text-slate-600">
             65+ campaigns managed across Google Ads, Meta Ads, and content — Caribbean and international markets.
           </p>
@@ -128,6 +173,7 @@ export default function CampaignResults() {
             Get your plan →
           </a>
         </div>
+
       </div>
     </section>
   );
