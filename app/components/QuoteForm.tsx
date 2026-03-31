@@ -4,7 +4,7 @@ import { useState } from "react";
 import { services } from "./serviceData";
 
 // Sign up at https://formspree.io and replace YOUR_FORM_ID
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xwvwbkbp";
 
 // ─── Step labels ─────────────────────────────────────────────────────────────
 const STEP_LABELS = ["Your Goal", "Your Support", "Your Budget", "Your Plan", "Connect"];
