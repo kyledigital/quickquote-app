@@ -355,43 +355,88 @@ export default function QuoteForm() {
 
         {/* Success screen */}
         {submitStatus === "success" ? (
-          <div className="mx-auto max-w-lg rounded-2xl border border-green-200 bg-green-50 p-10 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-              <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-              </svg>
+          <div className="mx-auto max-w-xl">
+            {/* Header */}
+            <div className="rounded-2xl border border-green-200 bg-green-50 px-8 py-8 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
+                <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              </div>
+              <h3 className="mt-4 text-2xl font-bold text-slate-900">
+                You're all set, {fullName.split(" ")[0]}!
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Your growth plan request has been received. Expect a reply at{" "}
+                <span className="font-semibold text-slate-900">{email}</span> within 24 hours.
+              </p>
             </div>
-            <h3 className="mt-4 text-xl font-bold text-slate-900">
-              You're all set, {fullName.split(" ")[0]}!
-            </h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Your growth plan request has been received. Expect a reply at{" "}
-              <span className="font-semibold text-slate-900">{email}</span> within 24 hours.
-            </p>
-            <div className="mx-auto mt-6 rounded-xl border border-slate-200 bg-white p-5 text-left">
+
+            {/* Plan summary */}
+            <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-6">
               <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">Your recommended plan</p>
-              <p className="mt-1 text-base font-bold text-slate-900">{pkg?.name}</p>
-              <div className="mt-3 flex gap-6 text-sm">
-                <div>
-                  <p className="text-xs text-slate-400">Setup Fee</p>
-                  <p className="mt-0.5 text-lg font-bold text-blue-600">{formatJMD(setupFee)}</p>
+              <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
+                <p className="text-lg font-bold text-slate-900">{pkg?.name}</p>
+                <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
+                  {pkg?.focus}
+                </span>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-4">
+                <div className="rounded-xl bg-slate-50 p-4">
+                  <p className="text-xs text-slate-400">Setup Fee (one-time)</p>
+                  <p className="mt-1 text-2xl font-bold text-slate-900">{formatJMD(setupFee)}</p>
                 </div>
-                <div>
-                  <p className="text-xs text-slate-400">Monthly Retainer</p>
-                  <p className="mt-0.5 text-lg font-bold text-blue-600">{formatJMD(retainer)}/mo</p>
+                <div className="rounded-xl bg-blue-50 p-4">
+                  <p className="text-xs text-blue-500">Monthly Retainer</p>
+                  <p className="mt-1 text-2xl font-bold text-blue-700">{formatJMD(retainer)}<span className="text-sm font-medium">/mo</span></p>
                 </div>
               </div>
+              {includedServices.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {includedServices.map((s) => (
+                    <span key={s.id} className="flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-700">
+                      <svg className="h-3 w-3 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                      </svg>
+                      {s.name}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
-            <button
-              onClick={() => {
-                setStep(1); setGoal(""); setSelectedSupport([]); setBudget("");
-                setFullName(""); setEmail(""); setWhatsapp(""); setBusinessName(""); setProjectNotes("");
-                setSubmitStatus("idle"); setErrors({});
-              }}
-              className="mt-5 text-sm font-medium text-blue-600 hover:underline"
-            >
-              Start over
-            </button>
+
+            {/* What's next */}
+            <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-6">
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">What happens next</p>
+              <div className="mt-4 space-y-4">
+                {[
+                  { icon: "📋", title: "We review your plan", body: "Your goal, support areas, and budget give us everything we need to prepare a focused response." },
+                  { icon: "💬", title: "You hear from us in 24 hours", body: `We'll reach out to ${email} with a clear next step — no sales pressure, just a straightforward conversation.` },
+                  { icon: "🚀", title: "We get to work", body: "Once we align on scope and timeline, we move fast. No long onboarding processes." },
+                ].map((item) => (
+                  <div key={item.title} className="flex items-start gap-4">
+                    <span className="text-xl">{item.icon}</span>
+                    <div>
+                      <p className="text-sm font-semibold text-slate-900">{item.title}</p>
+                      <p className="mt-0.5 text-xs leading-5 text-slate-500">{item.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-5 text-center">
+              <button
+                onClick={() => {
+                  setStep(1); setGoal(""); setSelectedSupport([]); setBudget("");
+                  setFullName(""); setEmail(""); setWhatsapp(""); setBusinessName(""); setProjectNotes("");
+                  setSubmitStatus("idle"); setErrors({});
+                }}
+                className="text-sm font-medium text-slate-400 hover:text-slate-700 hover:underline"
+              >
+                Submit another request
+              </button>
+            </div>
           </div>
         ) : (
           <div className="mx-auto max-w-2xl">
@@ -653,6 +698,25 @@ export default function QuoteForm() {
                         <span className="font-semibold">$1M+ in attributed revenue</span> — not a generic pricing table.
                       </p>
                     </div>
+
+                    {/* What happens next */}
+                    <div className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
+                      <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">What happens next</p>
+                      <div className="mt-3 space-y-3">
+                        {[
+                          { step: "1", text: "Click continue and share your contact details" },
+                          { step: "2", text: "We review your plan and follow up within 24 hours" },
+                          { step: "3", text: "We align on scope, timeline, and get to work" },
+                        ].map((item) => (
+                          <div key={item.step} className="flex items-start gap-3">
+                            <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                              {item.step}
+                            </div>
+                            <p className="text-xs leading-5 text-slate-600">{item.text}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 )}
 
@@ -771,8 +835,23 @@ export default function QuoteForm() {
                       )}
                     </button>
                     <p className="mt-3 text-center text-xs text-slate-400">
-                      No commitment. We follow up within 24 hours with a clear next step.
+                      No commitment. No spam. We follow up within 24 hours with a clear next step.
                     </p>
+
+                    {/* After-submit expectations */}
+                    <div className="mt-5 grid grid-cols-3 gap-3 rounded-xl border border-slate-100 bg-slate-50 p-4 text-center">
+                      {[
+                        { icon: "📋", title: "We review", body: "Your plan and details" },
+                        { icon: "💬", title: "We reply", body: "Within 24 hours" },
+                        { icon: "🚀", title: "We start", body: "On your terms" },
+                      ].map((item) => (
+                        <div key={item.title}>
+                          <p className="text-lg">{item.icon}</p>
+                          <p className="mt-1 text-xs font-semibold text-slate-700">{item.title}</p>
+                          <p className="mt-0.5 text-[10px] text-slate-400">{item.body}</p>
+                        </div>
+                      ))}
+                    </div>
                   </form>
                 )}
               </div>
